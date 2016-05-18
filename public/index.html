@@ -9,8 +9,8 @@
 			<div class="logo-wrapper">
 				<a class="logo" href="/"><img class="img-logo" src="/images/huge-white.png" alt="HUGE"></a>
 				<a class="menu" href="#">
-					<img src="/images/toggle-open.svg" alt="menu">
-					<img src="/images/toggle-close.svg" alt="x">
+					<img class="img-open" src="/images/toggle-open.svg" alt="menu">
+					<img class="img-close" src="/images/toggle-close.svg" alt="x">
 				</a>
 			</div>
 
@@ -38,6 +38,7 @@
 			</div>
 		</section>
 
+		<!-- TEMPLATES -->
 		<script id="nav-template" type="x-template">
 			<li{{if secNav}} class="first-level-nav"{{/if secNav}}>
 				<a href="{{url}}" class="nav-item">{{label}}</a>
@@ -133,13 +134,24 @@
 			document.addEventListener('ajaxCompleted', function(CustomEvent) { //listens to ajaxCompleted custom event and runs when fired
 				DOMReady(function() { //runs when DOM is ready
 					var navTemplate = document.querySelector('#nav-template').text; //retrieves navigation template from DOM
-					var navOutput = renderTemplate(navTemplate, data.items); //retrieves rendered template with data
+					var navOutput = renderTemplate(navTemplate, CustomEvent.detail.items); //retrieves rendered template with data
 
 					document.getElementById("navigation-list").innerHTML= navOutput; //inserts rendered template and data into DOM
+
+					document.querySelector('.menu').addEventListener('click', function() {
+						document.querySelector('.header').classList.toggle('open');
+					});
+
+					var firstLevelNavs = document.querySelectorAll('.first-level-nav');
+					Array.prototype.forEach.call(firstLevelNavs, function(el, i) {
+						el.querySelector('.nav-item').addEventListener('click', function() {
+							this.parentNode.classList.toggle('open');
+						});
+					});
 				});
 			});
 
-			ajaxGet('/api/nav.json'); //requests json navigation data
+			jsonAjaxGet('/api/nav.json'); //requests json navigation data
 		</script>
 	</body>
 </html>
