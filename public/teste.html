@@ -1,0 +1,281 @@
+<!-- <li>
+	<a href="" class="nav-item">Teste</a>
+</li>
+<li class="first-level-nav">
+	<a href="" class="nav-item">Teste</a>
+	<ul class="second-nav-list">
+		<li>
+			<a href="" class="sec-nav-item">Teste-sec</a>
+		</li>
+		<li>
+			<a href="" class="sec-nav-item">Teste-sec</a>
+		</li>
+		<li>
+			<a href="" class="sec-nav-item">Teste-sec</a>
+		</li>
+	</ul>
+</li>
+
+<ul id="nav"></ul> -->
+
+<script id="nav-template" type="x-template">
+	<li{{if secNav}} class="first-level-nav"{{/if secNav}}>
+		<a href="{{url}}" class="nav-item">{{label}}</a>
+		{{if secNav}}<ul class="second-nav-list">{{/if secNav}}
+			{{#sec-nav-items-template}}
+		{{if secNav}}</ul>{{/if secNav}}
+	</li>
+</script>
+
+<script id="sec-nav-items-template" type="x-template">
+			<li>
+				<a href="{{url}}" class="sec-nav-item">{{label}}</a>
+			</li>
+</script>
+
+<script>
+
+	var data = 	{
+		"items":[
+			{
+				"label":"WORK",
+				"url":"#/work",
+				"items":[]
+			},
+			{
+				"label":"ABOUT(internal)",
+				"url":"#/about",
+				"items":[
+					{
+						"label":"What we do",
+						"url":"#/about/what-we-do"
+					},
+					{
+						"label":"How we work",
+						"url":"#/about/how-we-work"
+					},
+					{
+						"label":"Leadership",
+						"url":"#/about/leadership"
+					}
+				]
+			}
+			//,
+			// {
+			// 	"label":"Careers",
+			// 	"url":"#/careers",
+			// 	"items":[
+			// 		{
+			// 			"label":"Client Services",
+			// 			"url":"#/careers/client-services"
+			// 		},
+			// 		{
+			// 			"label":"Creative",
+			// 			"url":"#/careers/creative"
+			// 		},
+			// 		{
+			// 			"label":"Motion & Media",
+			// 			"url":"#/careers/motion-and-media"
+			// 		},
+			// 		{
+			// 			"label":"Operations",
+			// 			"url":"#/careers/operations"
+			// 		},
+			// 		{
+			// 			"label":"People",
+			// 			"url":"#/careers/people"
+			// 		},
+			// 		{
+			// 			"label":"Strategy",
+			// 			"url":"#/careers/strategy"
+			// 		},
+			// 		{
+			// 			"label":"Technology",
+			// 			"url":"#/careers/technology"
+			// 		},
+			// 		{
+			// 			"label":"UX & Product Design",
+			// 			"url":"#/careers/ux-and-product-design"
+			// 		}
+			// 	]
+			// },
+			// {
+			// 	"label":"Ideas",
+			// 	"url":"#/ideas",
+			// 	"items":[
+			// 		{
+			// 			"label":"Reports",
+			// 			"url":"#/ideas/reports"
+			// 		},
+			// 		{
+			// 			"label":"Perspectives",
+			// 			"url":"#/ideas/perspectives"
+			// 		},
+			// 		{
+			// 			"label":"Books",
+			// 			"url":"#/ideas/books"
+			// 		},
+			// 		{
+			// 			"label":"Videos",
+			// 			"url":"#/ideas/videos"
+			// 		}
+			// 	]
+			// },
+			// {
+			// 	"label":"News",
+			// 	"url":"#/news",
+			// 	"items":[]
+			// },
+			// {
+			// 	"label":"Events",
+			// 	"url":"#/events",
+			// 	"items":[]
+			// },
+			// {
+			// 	"label":"Contact",
+			// 	"url":"#/contact",
+			// 	"items":[
+			// 		{
+			// 			"label":"Atlanta",
+			// 			"url":"#/contact/atlanta"
+			// 		},
+			// 		{
+			// 			"label":"Brooklyn",
+			// 			"url":"#/contact/brooklyn"
+			// 		},
+			// 		{
+			// 			"label":"DC",
+			// 			"url":"#/contact/dc"
+			// 		},
+			// 		{
+			// 			"label":"London",
+			// 			"url":"#/contact/london"
+			// 		},
+			// 		{
+			// 			"label":"Los Angeles",
+			// 			"url":"#/contact/los-angeles"
+			// 		},
+			// 		{
+			// 			"label":"Portland",
+			// 			"url":"#/contact/portland"
+			// 		},
+			// 		{
+			// 			"label":"Rio",
+			// 			"url":"#/contact/rio"
+			// 		},
+			// 		{
+			// 			"label":"San Francisco",
+			// 			"url":"#/contact/san-francisco"
+			// 		}
+			// 	]
+			// }
+		]
+	};
+
+	var Template = function(templateId, data) {//x-template type script id, json data
+		this.rawTemplate = document.querySelector(templateId).text;
+
+		this.output = this.renderTemplate(this.rawTemplate, data);
+	};
+
+	Template.prototype.renderTemplate = function(rawTemplate, data) {
+
+		console.log(data);
+
+		
+		var output = [],
+			snippet
+			_this = this;
+
+		if(Object.prototype.toString.call(data) === '[object Array]' && data.length) {
+		    
+			data.forEach(function(item) {
+				snippet = rawTemplate;
+
+				if (item.items && item.items.length) {//if there are subitems
+					snippet = snippet.replace(/\{\{if secNav\}\}/g, '');//maintains subitems class
+					snippet = snippet.replace(/\{\{\/if secNav\}\}/g, '');
+				} else {
+					snippet = snippet.replace(/\{\{if secNav\}\}(.+?)\{\{\/if secNav\}\}/g, '');//removes subitems class ([\s\S]*?)
+				}
+				
+				snippet = snippet.replace(/\{\{url\}\}/g, item.url); //replaces url
+				snippet = snippet.replace(/\{\{label\}\}/g, item.label); //replaces label
+
+				if(item && item.items) {
+					snippet = snippet.replace(
+						/\{\{#sec-nav-items-template\}\}/g,
+						_this.renderTemplate(document.querySelector('#sec-nav-items-template').text, item.items)
+					);
+				}
+
+				output.push(snippet);
+
+				// console.log(snippet);
+			});
+
+		}
+
+		// console.log(output.join(''));
+
+		if (output.length) {
+			return output.join('')
+		} else {
+			return '';
+		}
+
+	}
+
+	var navOutput = new Template('#nav-template', data.items).output;
+
+	console.log(navOutput);
+
+
+
+
+	// var MyModule = (function(Ajax, $win, $doc){
+
+	// 	function init() {
+	// 		bindEvents();
+	// 	}
+
+	// 	function get() {}
+
+	// 	return {
+	// 		init : init
+	// 	}
+
+	// })(window, document, Ajax);
+
+
+	// Template.prototype.checkRepeatable = function(rawTemplate) {
+
+	// 	// var regex = /\{\{repeat\ (.+?)\}\}([\s\S]*?)\{\{\/repeat\ (.+?)\}\}/m,
+	// 	// 	matchOutput = rawTemplate.match(regex),
+	// 	// 	outputRepeatName,
+	// 	// 	outputContent,
+	// 	// 	outputRepeatNameClose;
+
+	// 	// if (matchOutput && matchOutput.length) {
+	// 	// 	outputRepeatName = matchOutput[0];
+	// 	// 	outputContent = matchOutput[1];
+	// 	// 	outputRepeatNameClose = matchOutput[2];
+
+	// 	// 	console.log(outputRepeatName, '\n----\n',
+	// 	// 	outputContent, '\n----\n',
+	// 	// 	outputRepeatNameClose);
+	// 	// }
+
+	// 	// console.log(rawTemplate.search(/\{\{repeat\ (.+?)\}\}/g));
+
+	// 	var regex = /\{\{repeat\ (.+?)\}\}/g,
+	// 		openRepeat
+
+
+	// }
+
+
+
+	
+
+</script>
