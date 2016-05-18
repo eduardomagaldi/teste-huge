@@ -60,115 +60,115 @@
 					}
 				]
 			}
-			//,
-			// {
-			// 	"label":"Careers",
-			// 	"url":"#/careers",
-			// 	"items":[
-			// 		{
-			// 			"label":"Client Services",
-			// 			"url":"#/careers/client-services"
-			// 		},
-			// 		{
-			// 			"label":"Creative",
-			// 			"url":"#/careers/creative"
-			// 		},
-			// 		{
-			// 			"label":"Motion & Media",
-			// 			"url":"#/careers/motion-and-media"
-			// 		},
-			// 		{
-			// 			"label":"Operations",
-			// 			"url":"#/careers/operations"
-			// 		},
-			// 		{
-			// 			"label":"People",
-			// 			"url":"#/careers/people"
-			// 		},
-			// 		{
-			// 			"label":"Strategy",
-			// 			"url":"#/careers/strategy"
-			// 		},
-			// 		{
-			// 			"label":"Technology",
-			// 			"url":"#/careers/technology"
-			// 		},
-			// 		{
-			// 			"label":"UX & Product Design",
-			// 			"url":"#/careers/ux-and-product-design"
-			// 		}
-			// 	]
-			// },
-			// {
-			// 	"label":"Ideas",
-			// 	"url":"#/ideas",
-			// 	"items":[
-			// 		{
-			// 			"label":"Reports",
-			// 			"url":"#/ideas/reports"
-			// 		},
-			// 		{
-			// 			"label":"Perspectives",
-			// 			"url":"#/ideas/perspectives"
-			// 		},
-			// 		{
-			// 			"label":"Books",
-			// 			"url":"#/ideas/books"
-			// 		},
-			// 		{
-			// 			"label":"Videos",
-			// 			"url":"#/ideas/videos"
-			// 		}
-			// 	]
-			// },
-			// {
-			// 	"label":"News",
-			// 	"url":"#/news",
-			// 	"items":[]
-			// },
-			// {
-			// 	"label":"Events",
-			// 	"url":"#/events",
-			// 	"items":[]
-			// },
-			// {
-			// 	"label":"Contact",
-			// 	"url":"#/contact",
-			// 	"items":[
-			// 		{
-			// 			"label":"Atlanta",
-			// 			"url":"#/contact/atlanta"
-			// 		},
-			// 		{
-			// 			"label":"Brooklyn",
-			// 			"url":"#/contact/brooklyn"
-			// 		},
-			// 		{
-			// 			"label":"DC",
-			// 			"url":"#/contact/dc"
-			// 		},
-			// 		{
-			// 			"label":"London",
-			// 			"url":"#/contact/london"
-			// 		},
-			// 		{
-			// 			"label":"Los Angeles",
-			// 			"url":"#/contact/los-angeles"
-			// 		},
-			// 		{
-			// 			"label":"Portland",
-			// 			"url":"#/contact/portland"
-			// 		},
-			// 		{
-			// 			"label":"Rio",
-			// 			"url":"#/contact/rio"
-			// 		},
-			// 		{
-			// 			"label":"San Francisco",
-			// 			"url":"#/contact/san-francisco"
-			// 		}
-			// 	]
-			// }
+			,
+			{
+				"label":"Careers",
+				"url":"#/careers",
+				"items":[
+					{
+						"label":"Client Services",
+						"url":"#/careers/client-services"
+					},
+					{
+						"label":"Creative",
+						"url":"#/careers/creative"
+					},
+					{
+						"label":"Motion & Media",
+						"url":"#/careers/motion-and-media"
+					},
+					{
+						"label":"Operations",
+						"url":"#/careers/operations"
+					},
+					{
+						"label":"People",
+						"url":"#/careers/people"
+					},
+					{
+						"label":"Strategy",
+						"url":"#/careers/strategy"
+					},
+					{
+						"label":"Technology",
+						"url":"#/careers/technology"
+					},
+					{
+						"label":"UX & Product Design",
+						"url":"#/careers/ux-and-product-design"
+					}
+				]
+			},
+			{
+				"label":"Ideas",
+				"url":"#/ideas",
+				"items":[
+					{
+						"label":"Reports",
+						"url":"#/ideas/reports"
+					},
+					{
+						"label":"Perspectives",
+						"url":"#/ideas/perspectives"
+					},
+					{
+						"label":"Books",
+						"url":"#/ideas/books"
+					},
+					{
+						"label":"Videos",
+						"url":"#/ideas/videos"
+					}
+				]
+			},
+			{
+				"label":"News",
+				"url":"#/news",
+				"items":[]
+			},
+			{
+				"label":"Events",
+				"url":"#/events",
+				"items":[]
+			},
+			{
+				"label":"Contact",
+				"url":"#/contact",
+				"items":[
+					{
+						"label":"Atlanta",
+						"url":"#/contact/atlanta"
+					},
+					{
+						"label":"Brooklyn",
+						"url":"#/contact/brooklyn"
+					},
+					{
+						"label":"DC",
+						"url":"#/contact/dc"
+					},
+					{
+						"label":"London",
+						"url":"#/contact/london"
+					},
+					{
+						"label":"Los Angeles",
+						"url":"#/contact/los-angeles"
+					},
+					{
+						"label":"Portland",
+						"url":"#/contact/portland"
+					},
+					{
+						"label":"Rio",
+						"url":"#/contact/rio"
+					},
+					{
+						"label":"San Francisco",
+						"url":"#/contact/san-francisco"
+					}
+				]
+			}
 		]
 	};
 
@@ -179,39 +179,34 @@
 	};
 
 	Template.prototype.renderTemplate = function(rawTemplate, data) {
-
-		console.log(data);
-
-		
 		var output = [],
 			snippet
 			_this = this;
 
-		if(Object.prototype.toString.call(data) === '[object Array]' && data.length) {
+		if(Object.prototype.toString.call(data) === '[object Array]' && data.length) { //if data is array and not empty
 		    
-			data.forEach(function(item) {
+			data.forEach(function(item) { //for each data item
 				snippet = rawTemplate;
 
-				if (item.items && item.items.length) {//if there are subitems
-					snippet = snippet.replace(/\{\{if secNav\}\}/g, '');//maintains subitems class
+				if (item && item.items && item.items.length) {//if there are subitems
+					snippet = snippet.replace(/\{\{if secNav\}\}/g, '');//maintains conditional subitems htmls
 					snippet = snippet.replace(/\{\{\/if secNav\}\}/g, '');
 				} else {
-					snippet = snippet.replace(/\{\{if secNav\}\}(.+?)\{\{\/if secNav\}\}/g, '');//removes subitems class ([\s\S]*?)
+					snippet = snippet.replace(/\{\{if secNav\}\}(.+?)\{\{\/if secNav\}\}/g, '');//removes conditional subitems htmls
 				}
 				
 				snippet = snippet.replace(/\{\{url\}\}/g, item.url); //replaces url
 				snippet = snippet.replace(/\{\{label\}\}/g, item.label); //replaces label
 
-				if(item && item.items) {
+				if(item && item.items) {//if there are subitems
 					snippet = snippet.replace(
-						/\{\{#sec-nav-items-template\}\}/g,
-						_this.renderTemplate(document.querySelector('#sec-nav-items-template').text, item.items)
+						/\{\{#sec-nav-items-template\}\}/g, //replaces subitems placeholder
+						_this.renderTemplate(document.querySelector('#sec-nav-items-template').text, item.items) 
+						//for subitems rendered templates, calling this function again recursively with new template and internal items data
 					);
 				}
 
 				output.push(snippet);
-
-				// console.log(snippet);
 			});
 
 		}
@@ -223,15 +218,11 @@
 		} else {
 			return '';
 		}
-
 	}
 
 	var navOutput = new Template('#nav-template', data.items).output;
 
 	console.log(navOutput);
-
-
-
 
 	// var MyModule = (function(Ajax, $win, $doc){
 
@@ -273,9 +264,5 @@
 
 
 	// }
-
-
-
-	
 
 </script>
