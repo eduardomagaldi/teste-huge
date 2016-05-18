@@ -257,6 +257,10 @@ a {
         color: #000; }
         .navigation .navigation-list > li .nav-item:hover {
           background-color: #eee; }
+        .navigation .navigation-list > li .nav-item.loading {
+          font-family: "Galaxie", sans-serif; }
+          .navigation .navigation-list > li .nav-item.loading:hover {
+            background-color: transparent; }
       .navigation .navigation-list > li.first-level-nav:after {
         content: "";
         background-image: url("/images/chevron-down.svg");
@@ -281,7 +285,8 @@ a {
         display: block;
         height: 48px;
         color: #000;
-        font-weight: normal; }
+        font-weight: normal;
+        white-space: nowrap; }
         .navigation .second-nav-list > li .sec-nav-item:hover {
           background-color: #eee;
           color: #ec008c; }
@@ -356,6 +361,8 @@ a {
           color: #fff; }
           .navigation .navigation-list > li .nav-item:hover {
             color: #ec008c; }
+          .navigation .navigation-list > li .nav-item.loading:hover {
+            color: #fff; }
         .navigation .navigation-list > li.first-level-nav {
           position: relative; }
           .navigation .navigation-list > li.first-level-nav:hover .second-nav-list {

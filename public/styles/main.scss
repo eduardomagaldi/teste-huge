@@ -76,7 +76,14 @@ a {
 
 				&:hover {
 					background-color: $effect-color;
+				}
 
+				&.loading {
+					font-family: $main-font-family;
+
+					&:hover {
+						background-color: transparent;
+					}
 				}
 			}
 
@@ -113,6 +120,7 @@ a {
 				height: 48px;
 				color: $darkest-color;
 				font-weight: normal;
+				white-space: nowrap;
 
 				&:hover {
 					background-color: $effect-color;
@@ -208,6 +216,12 @@ a {
 
 					&:hover {
 						color: $highlight-color;
+					}
+
+					&.loading {
+						&:hover {
+							color: $lightest-color;
+						}
 					}
 				}
 

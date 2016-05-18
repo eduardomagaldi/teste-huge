@@ -172,19 +172,11 @@
 		]
 	};
 
-	var Template = function(templateId, data) {//x-template type script id, json data
-		this.rawTemplate = document.querySelector(templateId).text;
-
-		this.output = this.renderTemplate(this.rawTemplate, data);
-	};
-
-	Template.prototype.renderTemplate = function(rawTemplate, data) {
+	function renderTemplate(rawTemplate, data) {
 		var output = [],
-			snippet
-			_this = this;
+			snippet;
 
-		if(Object.prototype.toString.call(data) === '[object Array]' && data.length) { //if data is array and not empty
-		    
+		if(Object.prototype.toString.call(data) === '[object Array]') { //if data is array and not empty
 			data.forEach(function(item) { //for each data item
 				snippet = rawTemplate;
 
@@ -201,28 +193,26 @@
 				if(item && item.items) {//if there are subitems
 					snippet = snippet.replace(
 						/\{\{#sec-nav-items-template\}\}/g, //replaces subitems placeholder
-						_this.renderTemplate(document.querySelector('#sec-nav-items-template').text, item.items) 
+						renderTemplate(document.querySelector('#sec-nav-items-template').text, item.items) 
 						//for subitems rendered templates, calling this function again recursively with new template and internal items data
 					);
 				}
 
 				output.push(snippet);
 			});
-
 		}
 
-		// console.log(output.join(''));
-
-		if (output.length) {
-			return output.join('')
-		} else {
-			return '';
-		}
+		return output.join('')
 	}
 
-	var navOutput = new Template('#nav-template', data.items).output;
+	var navTemplate = document.querySelector('#nav-template').text;
 
-	console.log(navOutput);
+	var navOutput = renderTemplate(navTemplate, data.items);
+
+</script>
+
+<script>
+
 
 	// var MyModule = (function(Ajax, $win, $doc){
 

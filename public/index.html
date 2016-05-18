@@ -1,86 +1,145 @@
 <!doctype html>
 <html>
-<head>
-  <title>HUGE NavExercise</title>
-  <link rel="stylesheet" href="/styles/main.css">
-</head>
-<body>
-	<header class="header">
-		<div class="logo-wrapper">
-			<a class="logo" href="/"><img class="img-logo" src="/images/huge-white.png" alt="HUGE"></a>
-			<a class="menu" href="#">
-				<img src="/images/toggle-open.svg" alt="menu">
-				<img src="/images/toggle-close.svg" alt="x">
-			</a>
-		</div>
-
-		<nav class="navigation">
-			<div class="nav-list-wrapper">
-				<ul id="navigation-list" class="navigation-list">
-					<li>
-						<a href="" class="nav-item">Teste</a>
-					</li>
-					<li class="first-level-nav">
-						<a href="" class="nav-item">Teste</a>
-						<ul class="second-nav-list">
-							<li>
-								<a href="" class="sec-nav-item">Teste-sec</a>
-							</li>
-							<li>
-								<a href="" class="sec-nav-item">Teste-sec</a>
-							</li>
-							<li>
-								<a href="" class="sec-nav-item">Teste-sec</a>
-							</li>
-						</ul>
-					</li>
-					<li>
-						<a href="" class="nav-item">Teste</a>
-					</li>
-					<li>
-						<a href="" class="nav-item">Teste</a>
-					</li>
-				</ul>
-
-				<p class="copyright">© 2014 Huge. All Rights Reserved.</p>	
+	<head>
+		<title>HUGE NavExercise</title>
+		<link rel="stylesheet" href="/styles/main.css">
+	</head>
+	<body>
+		<header class="header">
+			<div class="logo-wrapper">
+				<a class="logo" href="/"><img class="img-logo" src="/images/huge-white.png" alt="HUGE"></a>
+				<a class="menu" href="#">
+					<img src="/images/toggle-open.svg" alt="menu">
+					<img src="/images/toggle-close.svg" alt="x">
+				</a>
 			</div>
-		</nav>
-	</header>
 
-	<section class="section">
-		<div class="main-title-wrapper">
-			<div class="img-title-wrapper"></div>
+			<nav class="navigation">
+				<div class="nav-list-wrapper">
+					<ul id="navigation-list" class="navigation-list">
+						<li><span class="loading nav-item">Loading...</span></li>
+					</ul>
+
+					<p class="copyright">© 2014 Huge. All Rights Reserved.</p>	
+				</div>
+			</nav>
+		</header>
+
+		<section class="section">
+			<div class="main-title-wrapper">
+				<div class="img-title-wrapper"></div>
+				<div class="content-wrapper">
+					<h1 class="main-title">Get paid for giving a shit.</h1>
+				</div>
+			</div>
+
 			<div class="content-wrapper">
-				<h1 class="main-title">Get paid for giving a shit.</h1>
+				<p class="main-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 			</div>
-		</div>
+		</section>
 
-		<div class="content-wrapper">
-			<p class="main-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-		</div>
-	</section>
+		<script id="nav-template" type="x-template">
+			<li{{if secNav}} class="first-level-nav"{{/if secNav}}>
+				<a href="{{url}}" class="nav-item">{{label}}</a>
+				{{if secNav}}<ul class="second-nav-list">{{/if secNav}}
+					{{#sec-nav-items-template}}
+				{{if secNav}}</ul>{{/if secNav}}
+			</li>
+		</script>
 
-	<script>
-		var request = new XMLHttpRequest();
-		request.open('GET', '/api/nav.json', true);
+		<script id="sec-nav-items-template" type="x-template">
+					<li>
+						<a href="{{url}}" class="sec-nav-item">{{label}}</a>
+					</li>
+		</script>
 
-		request.onload = function() {
-		  if (this.status >= 200 && this.status < 400) {
-		    // Success!
-		    var data = JSON.parse(this.response);
+		<script type="text/javascript">
+			function jsonAjaxGet(url) { //GETs JSON from given URL 
+				var request = new XMLHttpRequest();
+				request.open('GET', url, true);
 
-		    console.log(data);
-		  } else {
-		    // We reached our target server, but it returned an error
+				request.onload = function() {
+					if (this.status >= 200 && this.status < 400) {
+						// Success!
+						trigger('ajaxCompleted', JSON.parse(this.response));
+					} else {
+						alert('Sorry, there is an error with the request.');
+					}
+				};
 
-		  }
-		};
+				request.onerror = function() {
+					alert('Sorry, there is an error with the request.');
+				};
 
-		request.onerror = function() {
-		  // There was a connection error of some sort
-		};
+				request.send();
+			}
 
-		request.send();
-	</script>
-</body>
+			function trigger(event, data) { //triggers event and sends data with it
+				if (window.CustomEvent) {
+				  var event = new CustomEvent(event, {detail: data});
+				} else {
+				  var event = document.createEvent('CustomEvent');
+				  event.initCustomEvent(event, true, true, data);
+				}
+
+				document.dispatchEvent(event);
+			}
+
+			function renderTemplate(rawTemplate, data) { //returns rendered template with data
+				var output = [],
+					snippet;
+
+				if(Object.prototype.toString.call(data) === '[object Array]') { //if data is array and not empty
+					data.forEach(function(item) { //for each data item
+						snippet = rawTemplate;
+
+						if (item && item.items && item.items.length) {//if there are subitems
+							snippet = snippet.replace(/\{\{if secNav\}\}/g, '');//maintains conditional subitems htmls
+							snippet = snippet.replace(/\{\{\/if secNav\}\}/g, '');
+						} else {
+							snippet = snippet.replace(/\{\{if secNav\}\}(.+?)\{\{\/if secNav\}\}/g, '');//removes conditional subitems htmls
+						}
+						
+						snippet = snippet.replace(/\{\{url\}\}/g, item.url); //replaces url
+						snippet = snippet.replace(/\{\{label\}\}/g, item.label); //replaces label
+
+						if(item && item.items) {//if there are subitems
+							snippet = snippet.replace(
+								/\{\{#sec-nav-items-template\}\}/g, //replaces subitems placeholder
+								renderTemplate(document.querySelector('#sec-nav-items-template').text, item.items) 
+								//for subitems rendered templates, calls this function again recursively with new template and internal items data
+							);
+						}
+
+						output.push(snippet);
+					});
+				}
+
+				return output.join('')
+			}
+
+			function DOMReady(fn) { //runs function when DOM is ready
+				if (document.readyState !== 'loading') {
+					fn();
+				} else {
+					document.addEventListener('DOMContentLoaded', fn);
+				}
+			}
+
+			//-----------------------
+			//actual code starts here
+			//-----------------------
+
+			document.addEventListener('ajaxCompleted', function(CustomEvent) { //listens to ajaxCompleted custom event and runs when fired
+				DOMReady(function() { //runs when DOM is ready
+					var navTemplate = document.querySelector('#nav-template').text; //retrieves navigation template from DOM
+					var navOutput = renderTemplate(navTemplate, data.items); //retrieves rendered template with data
+
+					document.getElementById("navigation-list").innerHTML= navOutput; //inserts rendered template and data into DOM
+				});
+			});
+
+			ajaxGet('/api/nav.json'); //requests json navigation data
+		</script>
+	</body>
 </html>
