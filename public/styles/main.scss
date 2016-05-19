@@ -35,10 +35,13 @@ a {
 
 //header
 .header {
+	position: relative;
+	z-index: 3;
+
 	&.open {
 		position: absolute;
-	    width: 100%;
 	    height: 100%;
+	    width: 100%;
 
 		.menu {
 			right: 0;
@@ -74,9 +77,9 @@ a {
 }
 
 .logo {
+	@include transition(left);
 	left: -200px;
 	padding: 24px;
-	@include transition(left);
 	position: absolute;
 }
 
@@ -87,53 +90,51 @@ a {
 	position: absolute;
 	right: 100%;
 	width: 72px;
-	// -ms-transform: translate(3px,1px); /* IE 9 */
-	//    	-webkit-transform: translate(3px,1px); /* Safari */
-	//     transform: translate(3px,1px);
 
 	.img-close {
 		display: none;
 	}
-
-	
 }
 
 .navigation {
-	background: $overlay-color;
-	width: 0;
 	@include transition(width);
-	position: absolute;
 	height: 100%;
 	overflow: hidden;
+	position: absolute;
+	width: 0;
 
 	.nav-list-wrapper {
-		position: absolute;
-		background: $lightest-color;
-		height: 100%;
-		width: 80%;
-		overflow: hidden;
-		padding-top: 12px;
 		box-sizing: border-box;
+		height: 100%;
+		overflow: hidden;
+		position: relative;
+		width: 100%;
 	}
 
 	.navigation-list {
-		padding-left: 0;
+		background: $lightest-color;
+		height: 100%;
 		margin: 0;
 		padding-bottom: 48px;
+		padding-left: 0;
+		padding-top: 12px;
+		position: absolute;
+		width: 80%;
+		z-index: 3;
 
 		> li {
 			list-style: none;
 			position: relative;
 
 			.nav-item {
+				@include transition(background);
+				color: $darkest-color;
+				display: block;
 				font-family: $sec-font-family;
 				font-size: 21px;
+				height: 48px;
 				line-height: 48px;
 				padding: 0 24px;
-				display: block;
-				height: 48px;
-				color: $darkest-color;
-				@include transition(background);
 
 				&:hover {
 					background-color: $effect-color;
@@ -180,26 +181,26 @@ a {
 	}
 
 	.second-nav-list {
-		padding-left: 0;
-		height: 0;
 		@include transition(height);
+		height: 0;
 		overflow: hidden;
+		padding-left: 0;
 
 		> li {
 			list-style: none;
 
 			.sec-nav-item {
-				font-family: $main-font-family;
-				font-size: 16px;
-				line-height: 48px;
-				padding: 0 24px;
-				display: block;
-				height: 48px;
-				color: $darkest-color;
-				font-weight: normal;
-				white-space: nowrap;
 				@include transition(background);
 				@include transition(color);
+				color: $darkest-color;
+				display: block;
+				font-family: $main-font-family;
+				font-size: 16px;
+				font-weight: normal;
+				height: 48px;
+				line-height: 48px;
+				padding: 0 24px;
+				white-space: nowrap;
 
 				&:hover {
 					background-color: $effect-color;
@@ -211,20 +212,44 @@ a {
 }
 
 .copyright {
-	position: absolute;
 	bottom: 0;
-	left: 24px;
-	height: 48px;
-	margin-bottom: 0;
 	font-size: 12px;
+	height: 48px;
+	left: 24px;
 	line-height: 48px;
+	margin-bottom: 0;
+	position: absolute;
+	z-index: 3;
 }
 
 //content
+.overlay {
+	@include transition(display);
+	background: $overlay-color;
+	display: none;
+	height: 100%;
+	position: absolute;
+	width: 100%;
+	z-index: 2;
+
+	&.mobile.open {
+		display: block;
+	}
+
+	&.desktop {
+		display: none;
+	}
+}
+
+.section {
+	overflow: hidden;
+	position: relative;
+}
+
 .main-title {
+	font-family: $sec-font-family;
 	font-size: 44px;
 	line-height: 48px;
-	font-family: $sec-font-family;
 }
 
 .img-title-wrapper {
@@ -254,51 +279,64 @@ a {
 	.logo-wrapper {
 		background-color: transparent;
 		display: inline-block;
-		height: auto;
+		height: 72px;
+		width: 132px;
 	}
 
 	.logo {
 		display: block;
+		left: auto;
 	}
 
 	.menu,
-	// .second-nav-list,
 	.copyright {
 		display: none;
 	}
 
+	.overlay {
+		&.mobile.open {
+			display: none;
+		}
+
+		&.open.desktop {
+			display: block;
+		}
+	}
+
 	.navigation {
-		position: static;
-		width: auto;
-		height: auto;
 		background-color: transparent;
 		display: inline-block;
-		vertical-align: top;
 		font-size: 0;
+		height: auto;
 		overflow: visible;
+		position: static;
+		vertical-align: top;
+		width: auto;
 
 		.nav-list-wrapper {
-			display: inline-block;
 			background-color: transparent;
+			display: inline-block;
+			height: auto;
+			overflow: visible;
+			padding: 0;
 			position: static;
 			width: auto;
-			height: auto;
-			padding: 0;
-			overflow: visible;
 		}
 
 		.navigation-list {
-			padding-bottom: 0;
+			padding: 0;
+			background-color: transparent;
 
 			> li {
 				display: inline-block;
 				vertical-align: top;
 
 				.nav-item {
-					padding: 12px 24px;
-					line-height: 48px;
-					color: $lightest-color;
 					@include transition(color);
+					color: $lightest-color;
+					line-height: 52px;
+					padding: 12px 17px;
+					font-size: 15px;
 
 					&:hover {
 						color: $highlight-color;
@@ -335,21 +373,21 @@ a {
 		}
 
 		.second-nav-list {
-			padding-left: 0;
 			background-color: $effect-color;
+			left: 0;
+			padding-left: 0;
 			position: absolute;
 			top: 72px;
-			left: 0;
 			z-index: 2;
 		}
 	}
 
 	//content
 	.main-title-wrapper {
-		display: flex;
 		align-items: center;
-		justify-content: center;
+		display: flex;
 		height: 640px;
+		justify-content: center;
 		margin-bottom: 60px;
 
 		.content-wrapper {
@@ -365,19 +403,32 @@ a {
 	}
 
 	.content-wrapper {
+		margin: 0 auto;
 		max-width: 968px;
-		margin: 0 auto; 
 	}
 
 	.main-title {
+		color: $lightest-color;
 		font-size: 120px;
 		line-height: 132px;
 		text-align: center;
-		color: $lightest-color;
 	}
 
 	.main-paragraph {
 		font-size: 24px;
 		line-height: 36px;
+	}
+}
+
+@media (min-width: 1040px) { //desktop
+	.navigation {
+		.navigation-list {
+			> li {
+				.nav-item {
+					font-size: 21px;
+					padding: 12px 24px;
+				}
+			}
+		}
 	}
 }

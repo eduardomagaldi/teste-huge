@@ -21,11 +21,15 @@
 					</ul>
 
 					<p class="copyright">© 2014 Huge. All Rights Reserved.</p>	
+
+					<div class="overlay mobile"></div>
 				</div>
 			</nav>
 		</header>
 
 		<section class="section">
+			<div class="overlay desktop"></div>
+
 			<div class="main-title-wrapper">
 				<div class="img-title-wrapper"></div>
 				<div class="content-wrapper">
@@ -119,6 +123,20 @@
 				return output.join('')
 			}
 
+			function closeAllNav(items) {
+				document.querySelector('.overlay.mobile').classList.remove('open'); //hides overlay element
+				document.querySelector('.overlay.desktop').classList.remove('open'); //hides overlay element
+
+				Array.prototype.forEach.call(items, function(el, i) { //for all nav-items
+					el.parentNode.classList.remove('open'); //removes class open from parent, closing sub-menu
+				});
+			}
+
+			function onOverlayClick(items) {
+				closeAllNav(items);
+				document.querySelector('.header').classList.remove('open'); //closes mobile main menu
+			}
+
 			function DOMReady(fn) { //runs function when DOM is ready
 				if (document.readyState !== 'loading') {
 					fn();
@@ -133,19 +151,35 @@
 
 			document.addEventListener('ajaxCompleted', function(CustomEvent) { //listens to ajaxCompleted custom event and runs when fired
 				DOMReady(function() { //runs when DOM is ready
-					var navTemplate = document.querySelector('#nav-template').text; //retrieves navigation template from DOM
-					var navOutput = renderTemplate(navTemplate, CustomEvent.detail.items); //retrieves rendered template with data
+					var navTemplate = document.querySelector('#nav-template').text, //retrieves navigation template from DOM
+						navOutput = renderTemplate(navTemplate, CustomEvent.detail.items), //retrieves rendered template with data
+						navItems; //list of all nav-item elements
 
 					document.getElementById("navigation-list").innerHTML= navOutput; //inserts rendered template and data into DOM
 
+					navItems = document.querySelectorAll('.nav-item'); //list of all nav-item elements
+
 					document.querySelector('.menu').addEventListener('click', function() {
 						document.querySelector('.header').classList.toggle('open');
+						document.querySelector('.overlay.mobile').classList.toggle('open'); //hides overlay element
 					});
 
-					var firstLevelNavs = document.querySelectorAll('.first-level-nav');
-					Array.prototype.forEach.call(firstLevelNavs, function(el, i) {
-						el.querySelector('.nav-item').addEventListener('click', function() {
-							this.parentNode.classList.toggle('open');
+					document.querySelector('.overlay.mobile').addEventListener('click', function() { //listens to overlay mobile click
+						onOverlayClick(navItems);
+					});
+					document.querySelector('.overlay.desktop').addEventListener('click', function() { //listens to overlay desktop click
+						onOverlayClick(navItems);
+					});
+
+					Array.prototype.forEach.call(navItems, function(el, i) {//for each nav-item
+						el.addEventListener('click', function() { //listens to a click in this nav-item
+							closeAllNav(navItems);
+
+							if (this.parentNode.classList.contains('first-level-nav')) { //if clicked nav-item has sub-items
+								document.querySelector('.overlay.mobile').classList.add('open'); //adds class open, displaying overlay
+								document.querySelector('.overlay.desktop').classList.add('open'); //adds class open, displaying overlay
+								this.parentNode.classList.toggle('open'); //adds class open, opening sub-menu
+							}
 						});
 					});
 				});
